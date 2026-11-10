@@ -1,0 +1,30 @@
+{
+  "scenario_name": "1V3 混合会遇",
+  "own_ship": {
+    "length_m": 200,
+    "initial_speed_mps": 7.0,
+    "initial_heading_deg": 0.0,
+    "max_rudder_deg": 35.0,
+    "rudder_rate_deg_s": 1.5,
+    "rudder_time_constant_s": 7.0,
+    "yaw_time_constant_s": 32.0,
+    "max_yaw_rate_deg_s": 0.6
+  },
+  "route": [
+    [0.0, 12000.0]
+  ],
+  "targets": [
+    {"id": "TV1", "x_m": 0.0, "y_m": 4500.0, "heading_deg": 180.0, "speed_mps": 7.2, "length_m": 200, "type": "bulk"},
+    {"id": "TV2", "x_m": 2500.0, "y_m": 2500.0, "heading_deg": 270.0, "speed_mps": 7.0, "length_m": 100, "type": "container"},
+    {"id": "TV3", "x_m": -4500.0, "y_m": 4500.0, "heading_deg": 90.0, "speed_mps": 7.0, "length_m": 150, "type": "other"}
+  ],
+  "environment": {
+    "current_x_mps": 0.0,
+    "current_y_mps": 0.0,
+    "wind_speed_mps": 3.0,
+    "wind_dir_deg": 0.0,
+    "wave_level": 0.5,
+    "visibility_nm": 5.0
+  },
+  "sda_note": "SDA示例数据取自GB/T 46851—2025附录B部分组合；表外尺度估计外推。"
+}

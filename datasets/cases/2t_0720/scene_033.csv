@@ -1,0 +1,3 @@
+VSOMT,visibility,stage,ownship_behavior,meeting_situation,target_behavior,ownship_lat,ownship_lon,target_lat,target_lon,ownship_sog(KN),ownship_cog(deg),target_sog(KN),target_cog(deg),distance(NM),bearing(deg),DCPA(NM),TCPA(min),relative_speed(KN),relative_course(deg)
+,,Åö×²Î£ÏÕ,,×óÏÏ¶ÔÓö,,31.0,123.0,31.12771316164402,122.87492587987057,15.0,321.4,15.0,143.19999999999993,10.0,319.9,0.41875653729199047,19.98492209221989,29.99629897444982,142.29999999999995
+,,Åö×²Î£ÏÕ,,ÓÒÕıºá½»²æÏàÓö,,31.0,123.0,31.050417434953026,123.05091547690382,15.0,321.4,16.7,278.266971502886,4.0,41.0,-0.24,20.37297966035789,11.75908553841716,217.56018723248485

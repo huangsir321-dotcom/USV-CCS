@@ -1,0 +1,2 @@
+﻿VSOMT,visibility,stage,ownship_behavior,meeting_situation,target_behavior,ownship_lat,ownship_lon,target_lat,target_lon,ownship_sog(KN),ownship_cog(deg),target_sog(KN),target_cog(deg),distance(NM),bearing(deg),DCPA(NM),TCPA(min),relative_speed(KN),relative_course(deg),,,
+,,碰撞危险,,左舷对遇,,31,123,31.131308,122.972989,15,0,20,162.52,8,350,0,13.87,34.6,170,,,

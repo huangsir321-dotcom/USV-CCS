@@ -1,0 +1,54 @@
+USV COLREGs Simulator v1.6.2
+
+Delivery focus:
+- Speed commands use mission initial speed V0 as a fixed anchor; tactical setpoints are bounded to [0.5 V0, 1.5 V0], additionally narrowed by the vessel's configured min/max speed.
+- MPC exposes hold, +/-25%, and +/-50% speed levels. Replanning does not accumulate/rachet the setpoint.
+- Actual acceleration/deceleration remain rate-limited by length-dependent vessel parameters and first-order surge lag.
+- Rule 14 head-on: active collision-risk candidates are constrained to a noticeable starboard alteration.
+- Rule 15/16 right-side give-way: the ownship gives way and predicted crossing-ahead trajectories are rejected when circumstances admit a safe astern route; a substantial course alteration OR explicit speed reduction is accepted. Rule 15/16 do not force a starboard turn.
+- Rule 17 stand-on: hold course and speed before the intervention stage; apply Rule 17(c) port-turn preference only for port-side contact when circumstances admit.
+- Appendices C and D encounter buckets and scenarios are better represented, including right/left beam contacts; Appendix A Table A.1 angles are soft initial-angle references, not hard COLREG requirements.
+- 5-degree course resolution and five speed levels create 125 action candidates.
+
+SDA boundary and outcome:
+- Map circles are centered on each active target and use the same Appendix-B SDA radius used by the actual-distance failure check; SDApref remains separate for risk/intervention timing.
+- Actual minimum centre-to-centre separation is computed over each control interval by swept relative-motion segments. If it is strictly below the current encounter SDA, the target is latched as an SDA failure for the run; the run continues to preserve the full trajectory.
+- GUI status, per-target metrics, logs and evaluation CSV report the SDA breach, violating target IDs, minimum measured separation and SDA margin.
+- Appendix-B tables B.1-B.3 and Table B.4 vessel-type factors are included. Non-tabulated lengths are linearly interpolated/extrapolated and marked estimated. Crossing/beam uses the larger bow/stern row as a conservative boundary while the pass position is not locked. Unknown/following uses a visibly marked conservative estimated envelope because Appendix B has no dedicated row for those cases.
+- Appendix B is informative example data, not a universal mandatory radius for all ship types/waters; the project uses it as its default configured SDA reference.
+
+Validation:
+- 123 tests passed in the core run (`pytest -q --ignore=tests/test_route_recovery_regression.py`).
+- 3 route-controller/environment regression tests passed separately.
+- Uploaded Scene 001 route-recovery cases passed individually for 1T, 2T and 3T.
+- Total: 129 tests passed across grouped runs. The combined full-suite invocation was not used as a single passing result.
+- Python compileall passed for usv_sim, ui and tests.
+- Evaluation smoke test confirmed that 1T-001 risk assessment exposes SDA=1018.6 m for the configured 200 m ownship / 100 m target head-on example, and CSV output contains SDA breach and per-target separation fields.
+- GUI source compilation passed. Native Qt window test could not be run in this build environment because PySide6 is not installed; users should verify GUI rendering in their local Anaconda environment.
+- The default synthetic 1V2/1V3 mixed-threat smoke case can have no candidate satisfying every SDA constraint at its initial state. In that case the planner explicitly reports `minimum_risk`, prioritizes core rule direction/action constraints and logs unresolved SDA shortfall; it does not label the fallback safe.
+
+PPO compatibility:
+- Action contract: candidate-v4; observation contract: candidate-observation-v4.
+- Existing PPO checkpoints trained against candidate-v3 or earlier are incompatible and require retraining.
+- Rule-only deterministic DWA-MPC operation requires no PPO checkpoint.
+
+Reference documents included:
+- 1972国际海上避碰公约.pdf
+- ccs标准.pdf (GB/T 46851-2025)
+
+This is a research simulation implementation, not a COLREGs certification or a real-vessel safety guarantee.
+
+
+PPO tactical authority / route recovery fix (v1.6.2):
+- PPO is authorized to select actions only while the engine is in an active collision-avoidance manoeuvre window established by the shared rule/risk trigger. Rule 17 stand-on intervention is included when its configured intervention threshold is reached.
+- During passive monitoring, the action mask is a singleton containing the deterministic rule/MPC baseline candidate. This prevents PPO from initiating an untriggered heading/speed change.
+- During route recovery and post-recovery cruise, PPO is gated out; the same deterministic MPC baseline that is optimized for cross-track convergence controls recovery.
+- Training action masks and deployment action masks use the same phase gate. Candidate-v4 action count, observation size and actor-critic architecture are unchanged; v1.6.1 candidate-v4 checkpoints remain structurally compatible.
+- Encounter start, encounter-clear-to-recovery transition and newly involved target events invalidate held policy commands and force immediate replanning, rather than allowing an old PPO course command to persist until the next 10 s update.
+- GUI and step logs expose policy_source, policy_action_authorized, policy_gate_reason and maneuver_start_time_s.
+
+Validation (v1.6.2):
+- 130 tests passed with `python -m pytest -q --ignore=tests/test_route_recovery_regression.py`.
+- 6 route/dynamics regressions passed in targeted runs: uploaded 1T/2T/3T Scene 001 route recovery, plus wind/wave recovery candidate, 500 m yaw-authority and disturbance feed-forward tests.
+- 5 dedicated PPO gating tests passed, including an aggressive fake policy attempting a 60-degree turn in monitor/recovery phases and 1T-003 PPO-vs-rule trajectory equality during the initial low-risk window.
+- Total: 136 tests passed across grouped runs (130 core/non-route + 6 route/controller regressions). The three long uploaded Scene 001 recovery cases were run individually (1T, 2T, 3T); the remaining route/dynamics tests were run as a separate group. A combined route-file invocation timed out in this environment, so results are reported by targeted groups, not as one full-suite process. Python compileall and a 40 s headless simulation smoke test passed. PySide6 is not installed in this build environment, so Qt window interaction was not visually exercised. No user-trained PPO checkpoint was included in the archive; actual weight-specific A/B results require the user's .pt/.pth file.

@@ -1,0 +1,8 @@
+# Validated Windows / Python 3.11 CPU research environment.
+--extra-index-url https://download.pytorch.org/whl/cpu
+numpy==1.26.4
+matplotlib==3.8.4
+PySide6==6.8.3
+torch==2.15.0+cpu
+pytest>=7.4
+setuptools==78.1.0

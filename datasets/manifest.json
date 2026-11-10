@@ -1,0 +1,82 @@
+{
+  "dataset_name": "User uploaded encounter cases",
+  "total_cases": 268,
+  "groups": {
+    "1T": {
+      "directory": "1t",
+      "case_count": 138,
+      "target_rows": 138,
+      "target_rows_per_case": {
+        "1": 138
+      },
+      "encoding": "UTF-8 with BOM",
+      "stage_counts": {
+        "碰撞危险": 138
+      },
+      "encounter_label_counts": {
+        "0°对遇": 1,
+        "右舷对遇": 3,
+        "本船追越目标船": 21,
+        "右舷交叉": 15,
+        "右正横": 14,
+        "目标船追越本船": 53,
+        "左正横": 13,
+        "左舷交叉": 12,
+        "左舷对遇": 6
+      },
+      "preview_png_count": 0
+    },
+    "2T": {
+      "directory": "2t_0720",
+      "case_count": 99,
+      "target_rows": 198,
+      "target_rows_per_case": {
+        "2": 99
+      },
+      "encoding": "GB18030/GBK-compatible",
+      "stage_counts": {
+        "碰撞危险": 155,
+        "没有危险": 43
+      },
+      "encounter_label_counts": {
+        "左舷对遇": 52,
+        "左舷被追越": 14,
+        "右舷追越": 14,
+        "右舷对遇": 47,
+        "左舷追越": 16,
+        "右交叉相遇": 9,
+        "右正横交叉相遇": 15,
+        "右舷被追越": 10,
+        "左正横交叉相遇": 9,
+        "左交叉相遇": 12
+      },
+      "preview_png_count": 99
+    },
+    "3T": {
+      "directory": "3t",
+      "case_count": 31,
+      "target_rows": 93,
+      "target_rows_per_case": {
+        "3": 31
+      },
+      "encoding": "GB18030/GBK-compatible",
+      "stage_counts": {
+        "碰撞危险": 93
+      },
+      "encounter_label_counts": {
+        "右交叉相遇": 13,
+        "左正横交叉相遇": 9,
+        "左舷被追越": 8,
+        "右正横交叉相遇": 9,
+        "右舷追越": 13,
+        "左交叉相遇": 10,
+        "左舷追越": 9,
+        "右舷对遇": 6,
+        "右舷被追越": 11,
+        "左舷对遇": 5
+      },
+      "preview_png_count": 31
+    }
+  },
+  "source_data_note": "CSV files provide initial encounter states, not time-series vessel tracks. Vessel length/beam and control parameters are not supplied."
+}
